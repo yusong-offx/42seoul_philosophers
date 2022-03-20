@@ -1,3 +1,6 @@
 *.pdf
 philo
-*.o
+
+
+srcs/*.o
+utils/*.o
