@@ -6,4 +6,28 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct  s_philo
+{
+    char left_fork;
+    char right_fork;
+    int eat;
+    int sleep;
+    int die;
+    int must_eat;
+}                t_philo;
+
+// typedef struct  s_pginfo
+// {
+//     pthread_t   *tid;
+//     m
+// }
+
+// SRCS
+void    init_info(int *info, char **argv);
+
+
+// UTILS
+int	    ft_atoi(const char *str);
+char	**ft_split(char const *s, char c);
+
 #endif
