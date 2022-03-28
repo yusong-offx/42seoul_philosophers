@@ -6,6 +6,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+
+
 typedef struct  s_philo
 {
     char left_fork;
@@ -24,10 +26,12 @@ typedef struct  s_philo
 
 // SRCS
 void    init_info(int *info, char **argv);
+void    error_exit(char *msg);
 
 
 // UTILS
 int	    ft_atoi(const char *str);
 char	**ft_split(char const *s, char c);
+void    *safe_malloc(int size);
 
 #endif

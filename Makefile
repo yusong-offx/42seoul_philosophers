@@ -13,6 +13,7 @@ NAME=philo
 SRCS=$(D_LOGIC)main.c \
 	$(D_LOGIC)stock.c \
 	$(D_UTILS)atoi.c \
+	$(D_UTILS)safemalloc.c \
 	$(D_UTILS)split.c 
 
 OBJS= $(SRCS:.c=.o)
