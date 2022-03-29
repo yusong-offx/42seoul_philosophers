@@ -1,6 +1,6 @@
 #include "../includes/headerfile.h"
 
-pthread_t *g_tid;
+t_phoinfo   g_phoinfo;
 
 void *philo_fun(void *s)
 {
@@ -12,23 +12,18 @@ void *philo_fun(void *s)
 void    error_exit(char *msg)
 {
     printf("%s error\n", msg);
-    // 쓰레드해제
-    // pthread_detach(쓰레드id);
     exit(1);
 }
 
 int main(int argc, char **argv)
 {
-    pthread_t   tid;
-    t_philo     *philo;
     int         info[argc-1];
 
+    // argv 유효성검사
     init_info(info, argv);
-    printf("%ld\n", sizeof(g_tid));
-    pthread_create(&tid, NULL, philo_fun, NULL);
-    // pthread_detach(tid);
-    pthread_join(tid, NULL);
-    printf("main end\n");
+    init_phoinfo(&g_phoinfo, info);
 
-    exit(0);
+    
+    printf("main end\n");
+    return (0);
 }

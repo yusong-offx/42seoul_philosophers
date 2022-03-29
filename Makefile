@@ -13,18 +13,17 @@ NAME=philo
 SRCS=$(D_LOGIC)main.c \
 	$(D_LOGIC)stock.c \
 	$(D_UTILS)atoi.c \
-	$(D_UTILS)safemalloc.c \
-	$(D_UTILS)split.c 
+	$(D_UTILS)safemalloc.c
 
 OBJS= $(SRCS:.c=.o)
 
 all : $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -I $(D_HEADERS) -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I $(D_HEADERS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	$(RM) $(OBJS)

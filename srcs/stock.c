@@ -1,5 +1,10 @@
 #include "../includes/headerfile.h"
 
+void    ready(int argc, int *info)
+{
+
+}
+
 void    init_info(int *info, char **argv)
 {
     int i;
@@ -12,18 +17,19 @@ void    init_info(int *info, char **argv)
     }
 }
 
-// void    init_philo(t_philo *p, int *info)
-// {
-//     int i;
+void    init_philo(t_philo *philo)
+{
 
-//     i = -1;
-//     while (i++ < num)
-//     {
-//         p[i].left_fork = ;
-//         p[i].right_fork = ;
-//         p[i].eat = info[];
-//         p[i].sleep = ;
-//         p[i].die = ;
-//         p[i].must_eat = ;
-//     }
-// }
+}
+
+void    init_phoinfo(t_phoinfo *phoinfo, int *info)
+{
+    phoinfo->num = info[0];
+    phoinfo->die = info[1];
+    phoinfo->eat = info[2];
+    phoinfo->sleep = info[3];
+    phoinfo->tid = (pthread_t)safe_malloc(phoinfo->num * sizeof(pthread_t));
+    phoinfo->mid = (pthread_mutex_t)safe_malloc(phoinfo->num * sizeof(pthread_mutex_t));
+
+}
+

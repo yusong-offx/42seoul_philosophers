@@ -1,6 +1,6 @@
 *.pdf
 philo
-
+test.c
 
 srcs/*.o
 utils/*.o
