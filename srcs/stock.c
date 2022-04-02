@@ -1,10 +1,5 @@
 #include "../includes/headerfile.h"
 
-void    day()
-{
-
-}
-
 void    init_info(int *info, char **argv)
 {
     int i;

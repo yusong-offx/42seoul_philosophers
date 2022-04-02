@@ -28,13 +28,14 @@ typedef struct      s_phoinfo
     int             die;
 }                   t_phoinfo;
 t_phoinfo           g_phoinfo;
+suseconds_t         g_start;
 
 // SRCS
 void    error_exit(char *msg);
 void    init_info(int *info, char **argv);
 void    init_phoinfo(int *info);
 void    init_philo(int must_eat);
-
+void    live(void);
 // UTILS
 int	    ft_atoi(const char *str);
 char	**ft_split(char const *s, char c);

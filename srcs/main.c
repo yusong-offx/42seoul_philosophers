@@ -15,7 +15,7 @@ void    error_exit(char *msg)
 
 int main(int argc, char **argv)
 {
-    int         info[argc-1];
+    int             info[argc-1];
 
     // argv 유효성검사
     init_info(info, argv);
@@ -24,8 +24,7 @@ int main(int argc, char **argv)
         init_philo(info[4]);
     else
         init_philo(-1);
-    printf("%d %d %d %d\n", g_phoinfo.num, g_phoinfo.die, g_phoinfo.eat, g_phoinfo.sleep);
-    
-    printf("main end\n");
-    return (0);
+    live();
+    printf("====== END ========\n");
+    exit(0);
 }
