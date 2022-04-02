@@ -1,7 +1,5 @@
 #include "../includes/headerfile.h"
 
-t_phoinfo   g_phoinfo;
-
 void *philo_fun(void *s)
 {
     usleep(1000000);
@@ -21,8 +19,12 @@ int main(int argc, char **argv)
 
     // argv 유효성검사
     init_info(info, argv);
-    init_phoinfo(&g_phoinfo, info);
-
+    init_phoinfo(info);
+    if (argc == 6)
+        init_philo(info[4]);
+    else
+        init_philo(-1);
+    printf("%d %d %d %d\n", g_phoinfo.num, g_phoinfo.die, g_phoinfo.eat, g_phoinfo.sleep);
     
     printf("main end\n");
     return (0);

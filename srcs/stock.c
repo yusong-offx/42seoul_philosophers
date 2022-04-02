@@ -1,6 +1,6 @@
 #include "../includes/headerfile.h"
 
-void    ready(int argc, int *info)
+void    day()
 {
 
 }
@@ -17,19 +17,41 @@ void    init_info(int *info, char **argv)
     }
 }
 
-void    init_philo(t_philo *philo)
+void    init_philo(int must_eat)
 {
+    int i;
+    int base;
 
+    i = -1;
+    base = g_phoinfo.num;
+    while (++i < g_phoinfo.num)
+    {
+        g_phoinfo.philo[i].name = i + 1;
+        g_phoinfo.philo[i].left = &g_phoinfo.fork[i];
+        g_phoinfo.philo[i].right = &g_phoinfo.fork[(base + 1 + i) % g_phoinfo.num];
+        g_phoinfo.philo[i].left_m = &g_phoinfo.mid[i];
+        g_phoinfo.philo[i].right_m = &g_phoinfo.mid[(base + 1 + i) % g_phoinfo.num];
+        g_phoinfo.philo[i].must_eat_cnt = must_eat;
+    }
 }
 
-void    init_phoinfo(t_phoinfo *phoinfo, int *info)
+void    init_phoinfo(int *info)
 {
-    phoinfo->num = info[0];
-    phoinfo->die = info[1];
-    phoinfo->eat = info[2];
-    phoinfo->sleep = info[3];
-    phoinfo->tid = (pthread_t)safe_malloc(phoinfo->num * sizeof(pthread_t));
-    phoinfo->mid = (pthread_mutex_t)safe_malloc(phoinfo->num * sizeof(pthread_mutex_t));
+    int cnt;
 
+    g_phoinfo.num = info[0];
+    g_phoinfo.die = info[1];
+    g_phoinfo.eat = info[2];
+    g_phoinfo.sleep = info[3];
+    g_phoinfo.fork = safe_malloc(g_phoinfo.num *sizeof(char));
+    g_phoinfo.philo = safe_malloc(g_phoinfo.num * sizeof(t_philo));
+    g_phoinfo.mid = safe_malloc(g_phoinfo.num * sizeof(pthread_mutex_t));
+    cnt = info[0];
+    while (cnt)
+    {
+        cnt--;
+        pthread_mutex_init(&g_phoinfo.mid[cnt], NULL);
+        g_phoinfo.fork[cnt] = 1;
+    }
 }
 

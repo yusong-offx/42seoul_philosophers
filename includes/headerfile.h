@@ -7,27 +7,33 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-typedef struct  s_philo
+typedef struct      s_philo
 {
-    char        left_fork;
-    char        right_fork;
-    int         must_eat_cnt;
-}               t_philo;
+    int             name;
+    char            *left;
+    char            *right;
+    pthread_mutex_t *left_m;
+    pthread_mutex_t *right_m;
+    int             must_eat_cnt;
+}                   t_philo;
 
 typedef struct      s_phoinfo
 {
-    pthread_t       *tid;
+    t_philo         *philo;
+    char            *fork;
     pthread_mutex_t *mid;
     int             num;
     int             eat;
     int             sleep;
     int             die;
 }                   t_phoinfo;
+t_phoinfo           g_phoinfo;
 
 // SRCS
-void    init_info(int *info, char **argv);
 void    error_exit(char *msg);
-void    init_phoinfo(t_phoinfo *phoinfo, int *info);
+void    init_info(int *info, char **argv);
+void    init_phoinfo(int *info);
+void    init_philo(int must_eat);
 
 // UTILS
 int	    ft_atoi(const char *str);
