@@ -27,18 +27,15 @@ typedef struct      s_phoinfo
     int             sleep;
     int             die;
 }                   t_phoinfo;
-t_phoinfo           g_phoinfo;
-suseconds_t         g_start;
 
 // SRCS
-void    error_exit(char *msg);
-void    init_info(int *info, char **argv);
-void    init_phoinfo(int *info);
-void    init_philo(int must_eat);
-void    live(void);
+void        error_exit(char *msg);
+
+
 // UTILS
 int	    ft_atoi(const char *str);
 char	**ft_split(char const *s, char c);
 void    *safe_malloc(int size);
+void    print_form(int i, char *s);
 
 #endif
