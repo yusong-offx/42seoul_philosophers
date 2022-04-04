@@ -70,10 +70,11 @@ char	init_philosophers(t_setting *set)
 	i = -1;
 	while (++i < set->num)
 	{
-		set->philosophers[i].right = &(set->mid[(set->num - 1 + i) % set->num]);
-		set->philosophers[i].left = &(set->mid[(set->num + 1 + i) % set->num]);
+		set->philosophers[i].left = &(set->mid[(set->num - 1 + i) % set->num]);
+		set->philosophers[i].right = &(set->mid[(set->num + i) % set->num]);
 		set->philosophers[i].name = i + 1;
 		set->philosophers[i].eat_cnt = set->eat_cnt;
+		set->philosophers[i].set = set;
 	}
 	return (1);
 }

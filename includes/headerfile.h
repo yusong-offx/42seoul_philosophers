@@ -21,12 +21,13 @@
 
 typedef struct s_philosopher
 {
-	int				name;
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
-	int				eat_cnt;
-	suseconds_t		prev_eat_time;
-}					t_philosopher;
+	int					name;
+	pthread_mutex_t		*left;
+	pthread_mutex_t		*right;
+	int					eat_cnt;
+	suseconds_t			prev_eat_time;
+	struct s_setting	*set;
+}						t_philosopher;
 
 typedef struct s_setting
 {
@@ -39,16 +40,15 @@ typedef struct s_setting
 	int				sleep_time;
 	int				eat_time;
 	int				eat_cnt;
+	suseconds_t		start_time;
 }					t_setting;
 
-suseconds_t g_time;
-pthread_mutex_t g_mtx;
 // utils
 int			ft_atoi(const char *str);
 char		is_num(char *c);
 suseconds_t	get_time(void);
 void		my_sleep(int time);
-void		f_printf(int i, char *s);
+void		f_printf(int i, char *s, suseconds_t start_time);
 
 // init.c
 char		valid_argv(int argc, char **argv, int *info);

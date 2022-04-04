@@ -11,24 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/headerfile.h"
-void	checker(t_setting *set)
-{
-	printf("num %d\n", set->num);
-	printf("die %d\n",set->die_time);
-	printf("sleep %d\n",set->sleep_time);
-	printf("eat %d\n",set->eat_time);
-	printf("eat_cnt %d\n",set->eat_cnt);
-	printf("\n");
-	printf("philo\n");
-	for (int i = 0; i < set->num; i++)
-	{
-		printf("name %d\n",set->philosophers[i].name);
-		printf("left %p\n",set->philosophers[i].left);
-		printf("right %p\n",set->philosophers[i].right);
-		printf("eat_cnt %d\n",set->philosophers[i].eat_cnt);
-		printf("\n");
-	}
-}
 
 int	main(int argc, char **argv)
 {
@@ -45,7 +27,7 @@ int	main(int argc, char **argv)
 		printf("malloc error\n");
 		return (1);
 	}
-	checker(&set);
+	// checker(&set);
 	if (!life_start(&set))
 	{
 		printf("life something wrong");

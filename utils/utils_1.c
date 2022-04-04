@@ -60,21 +60,19 @@ suseconds_t	get_time(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_usec);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 void	my_sleep(int time)
 {
 	suseconds_t	now;
 
-	now = get_time() + time * 1000;
+	now = get_time() + time;
 	while (now > get_time())
-		usleep(1000);
+		usleep(10000);
 }
 
-void	f_printf(int i, char *s)
+void	f_printf(int i, char *s, suseconds_t start_time)
 {
-	pthread_mutex_lock(&g_mtx);
-	printf("[%10dms] %d %s\n",(get_time() - g_time) / 1000, i, s);
-	pthread_mutex_unlock(&g_mtx);
+	printf("[%10ldms] %d %s\n",(get_time() - start_time), i, s);
 }

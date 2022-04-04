@@ -12,81 +12,70 @@
 
 #include "../includes/headerfile.h"
 
-void	take_fork(t_setting *set)
+void	eat(t_philosopher *ph)
 {
-	t_philosopher	ph;
-
-	ph = set->philosophers[set->i];
-	if ((set->i) % 2)
+	if ((ph->name) % 2)
 	{
-		pthread_mutex_lock(ph.left);
-		f_printf(ph.name, "has taken a  fork.");
-		pthread_mutex_lock(ph.right);
-		f_printf(ph.name, "has taken a  fork.");
+		pthread_mutex_lock(ph->left);
+		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		pthread_mutex_lock(ph->right);
+		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		f_printf(ph->name, "is eating.", ph->set->start_time);
+		my_sleep(ph->set->eat_time);
+		pthread_mutex_unlock(ph->left);
+		pthread_mutex_unlock(ph->right);
 	}
 	else
 	{
-		pthread_mutex_lock(ph.right);
-		f_printf(ph.name, "has taken a  fork.");
-		pthread_mutex_lock(ph.left);
-		f_printf(ph.name, "has taken a  fork.");
+		pthread_mutex_lock(ph->right);
+		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		pthread_mutex_lock(ph->left);
+		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		f_printf(ph->name, "is eating.", ph->set->start_time);
+		my_sleep(ph->set->eat_time);
+		pthread_mutex_unlock(ph->left);
+		pthread_mutex_unlock(ph->right);
 	}
 }
 
-void	eat(t_setting *set)
+void	life_sleep(t_philosopher *ph)
 {
-	t_philosopher	ph;
-
-	ph = set->philosophers[set->i];
-	f_printf(ph.name, "is eating.");
-	my_sleep(set->eat_time);
-	pthread_mutex_unlock(ph.left);
-	pthread_mutex_unlock(ph.right);
-}
-
-void	life_sleep(t_setting *set)
-{
-	t_philosopher	ph;
-
-	ph = set->philosophers[set->i];
-	f_printf(ph.name, "is sleeping.");
-	my_sleep(set->sleep_time);
+	f_printf(ph->name, "is sleeping.", ph->set->start_time);
+	my_sleep(ph->set->sleep_time);
 }
 
 void	*life(void *a)
 {
-	t_setting		*set;
-	t_philosopher	ph;
+	t_philosopher	*ph;
 
-	set = (t_setting *)a;
-	ph = set->philosophers[set->i];
-	ph.prev_eat_time = get_time();
-	while (ph.eat_cnt)
+	ph = (t_philosopher *)a;
+	ph->prev_eat_time = get_time();
+	while (ph->eat_cnt)
 	{
-		if ((get_time() - ph.prev_eat_time) / 1000 > set->die_time)
+		if ((get_time() - ph->prev_eat_time) > ph->set->die_time)
+		{
+			printf("%d die\n", ph->name);
 			exit(0);
-		f_printf(ph.name, "is thinking.");
-		take_fork(set);
-		eat(set);
-		ph.eat_cnt--;
-		life_sleep(set);
+		}
+		f_printf(ph->name, "is thinking.", ph->set->start_time);
+		eat(ph);
+		ph->eat_cnt--;
+		ph->prev_eat_time = get_time();
+		life_sleep(ph);
 	}
 	return (0);
 }
 
 char	life_start(t_setting *set)
 {
-	int	i;
+	int			i;
 
 	i = 0;
-	g_time = get_time();
-	pthread_mutex_init(&g_mtx, NULL);
+	set->start_time = get_time();
 	while (i < set->num)
 	{
-		set->i = i;
-		if (pthread_create(&(set->pid[i]), NULL, life, set))
+		if (pthread_create(&(set->pid[i]), NULL, life, &(set->philosophers[i])))
 			return (0);
-		usleep(10);
 		i++;
 	}
 	i = 0;
