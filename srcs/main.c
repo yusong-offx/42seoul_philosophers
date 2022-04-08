@@ -19,20 +19,21 @@ int	main(int argc, char **argv)
 
 	if (!valid_argv(argc, argv, info))
 	{
-		printf("input error\n");
+		printf("input error.\n");
 		return (1);
 	}
 	if (!init(info, &set))
 	{
-		printf("malloc error\n");
+		printf("init error.\n");
 		return (1);
 	}
-	// checker(&set);
 	if (!life_start(&set))
 	{
-		printf("life something wrong");
+		printf("life something wrong.\n");
 		return (1);
 	}
-	printf("=== main end ===\n");
+	printf("all live... Life is continue...\n");
 	return (0);
 }
+
+// 쓰레드 한개 더 만들어서 죽는순간 찾기

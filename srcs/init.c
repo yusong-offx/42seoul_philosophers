@@ -26,6 +26,8 @@ char	valid_argv(int argc, char **argv, int *info)
 			i++;
 		}
 		init_info(argv, info);
+		if (info[1] <= 1)
+			return (0);
 		return (1);
 	}
 	return (0);
@@ -44,17 +46,6 @@ void	init_info(char **argv, int *info)
 	}
 }
 
-void	init_mid(pthread_mutex_t *mid)
-{
-	pthread_mutex_init(mid, NULL);
-	printf("%p\n", mid);
-}
-
-void	init_p(t_philosopher *p, t_setting *set)
-{
-
-}
-
 char	init_philosophers(t_setting *set)
 {
 	int	i;
@@ -66,12 +57,13 @@ char	init_philosophers(t_setting *set)
 		return (0);
 	i = -1;
 	while (++i < set->num)
-		pthread_mutex_init(&(set->mid[i]), NULL);
+		if (pthread_mutex_init(&(set->mid[i]), NULL))
+			return (0);
 	i = -1;
 	while (++i < set->num)
 	{
-		set->philosophers[i].left = &(set->mid[(set->num - 1 + i) % set->num]);
-		set->philosophers[i].right = &(set->mid[(set->num + i) % set->num]);
+		set->philosophers[i].left = &(set->mid[i]);
+		set->philosophers[i].right = &(set->mid[(i + 1) % set->num]);
 		set->philosophers[i].name = i + 1;
 		set->philosophers[i].eat_cnt = set->eat_cnt;
 		set->philosophers[i].set = set;
@@ -86,8 +78,8 @@ char	init(int *info, t_setting *set)
 	set->eat_time = info[3];
 	set->sleep_time = info[4];
 	set->eat_cnt = info[5];
-
-	if (init_philosophers(set))
+	set->end_flag = -1;
+	if (init_philosophers(set) && !pthread_mutex_init(&(set->m_print), NULL))
 		return (1);
 	return (0);
 }

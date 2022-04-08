@@ -11,36 +11,40 @@
 /* ************************************************************************** */
 
 #include "../includes/headerfile.h"
+int	g_eat;
+pthread_mutex_t tmp;
+void test()
+{
+	pthread_mutex_lock(&tmp);
+	g_eat++;
+	pthread_mutex_unlock(&tmp);
+}
 
 void	eat(t_philosopher *ph)
 {
 	if ((ph->name) % 2)
 	{
 		pthread_mutex_lock(ph->left);
-		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		f_printf(ph, "has taken a fork.");
 		pthread_mutex_lock(ph->right);
-		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
-		f_printf(ph->name, "is eating.", ph->set->start_time);
-		my_sleep(ph->set->eat_time);
-		pthread_mutex_unlock(ph->left);
-		pthread_mutex_unlock(ph->right);
+		f_printf(ph, "has taken a fork.");
 	}
 	else
 	{
 		pthread_mutex_lock(ph->right);
-		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
+		f_printf(ph, "has taken a fork.");
 		pthread_mutex_lock(ph->left);
-		f_printf(ph->name, "has taken a fork.", ph->set->start_time);
-		f_printf(ph->name, "is eating.", ph->set->start_time);
-		my_sleep(ph->set->eat_time);
-		pthread_mutex_unlock(ph->left);
-		pthread_mutex_unlock(ph->right);
+		f_printf(ph, "has taken a fork.");
 	}
+	f_printf(ph, "is eating.");
+	my_sleep(ph->set->eat_time);
+	pthread_mutex_unlock(ph->left);
+	pthread_mutex_unlock(ph->right);
 }
 
 void	life_sleep(t_philosopher *ph)
 {
-	f_printf(ph->name, "is sleeping.", ph->set->start_time);
+	f_printf(ph, "is sleeping.");
 	my_sleep(ph->set->sleep_time);
 }
 
@@ -49,40 +53,44 @@ void	*life(void *a)
 	t_philosopher	*ph;
 
 	ph = (t_philosopher *)a;
-	ph->prev_eat_time = get_time();
-	while (ph->eat_cnt)
+	ph->prev_eat_time = get_time() - ph->set->start_time;
+	while (ph->eat_cnt && ph->set->end_flag == -1)
 	{
-		if ((get_time() - ph->prev_eat_time) > ph->set->die_time)
-		{
-			printf("%d die\n", ph->name);
-			exit(0);
-		}
-		f_printf(ph->name, "is thinking.", ph->set->start_time);
 		eat(ph);
+		usleep(1500);
 		ph->eat_cnt--;
-		ph->prev_eat_time = get_time();
+		ph->prev_eat_time = get_time() - ph->set->start_time;
 		life_sleep(ph);
+		f_printf(ph, "is thinking.");
 	}
+	test();
 	return (0);
 }
 
+
+
 char	life_start(t_setting *set)
 {
-	int			i;
+	int	i;
+	int	start;
 
-	i = 0;
+	pthread_mutex_init(&tmp, NULL);
+	i = -1;
 	set->start_time = get_time();
-	while (i < set->num)
-	{
+	while (++i < set->num)
 		if (pthread_create(&(set->pid[i]), NULL, life, &(set->philosophers[i])))
 			return (0);
-		i++;
-	}
-	i = 0;
-	while (i < set->num)
+	while(1)
 	{
-		pthread_join(set->pid[i], NULL);
-		i++;
+		if (g_eat == set->num)
+			break;
+		else if (set->end_flag != -1)
+			return (0);
 	}
+	i = -1;
+	while (++i < set->num)
+		pthread_join(set->pid[i], NULL);
+	if (set->end_flag != -1)
+		return (0);
 	return (1);
 }

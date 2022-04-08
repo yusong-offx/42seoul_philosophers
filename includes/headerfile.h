@@ -41,14 +41,10 @@ typedef struct s_setting
 	int				eat_time;
 	int				eat_cnt;
 	suseconds_t		start_time;
+	pthread_mutex_t	m_print;
+	int				end_flag;
+	pthread_t		end_th;
 }					t_setting;
-
-// utils
-int			ft_atoi(const char *str);
-char		is_num(char *c);
-suseconds_t	get_time(void);
-void		my_sleep(int time);
-void		f_printf(int i, char *s, suseconds_t start_time);
 
 // init.c
 char		valid_argv(int argc, char **argv, int *info);
@@ -57,6 +53,17 @@ char		init_philosophers(t_setting *set);
 char		init(int *info, t_setting *set);
 
 // life.c
+void		eat(t_philosopher *ph);
+void		life_sleep(t_philosopher *ph);
+void		*life(void *a);
 char		life_start(t_setting *set);
+void		*exit_all_life(void *set);
+
+// utils
+int			ft_atoi(const char *str);
+char		is_num(char *c);
+suseconds_t	get_time(void);
+void		my_sleep(int time);
+void		f_printf(t_philosopher *ph, char *s);
 
 #endif
