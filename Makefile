@@ -1,7 +1,7 @@
 # OPTION
 CC=gcc
-CFLAGS= -pthread
-#CFLAGS= -Wall -Werror -Wextra -pthread
+CFLAGS= 
+# CFLAGS= -Wall -Werror -Wextra
 RM= rm -f
 
 # SOURCE
@@ -13,7 +13,7 @@ NAME=philo
 SRCS=	$(D_LOGIC)main.c \
 		$(D_LOGIC)init.c \
 		$(D_LOGIC)life.c \
-		$(D_UTILS)utils_1.c
+		$(D_UTILS)utils.c
 
 
 OBJS= $(SRCS:.c=.o)
@@ -21,10 +21,10 @@ OBJS= $(SRCS:.c=.o)
 all : $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) -pthread -o $(NAME) $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -pthread -c $< -o $@
 
 clean :
 	$(RM) $(OBJS)

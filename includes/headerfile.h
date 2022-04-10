@@ -21,43 +21,44 @@
 
 typedef struct s_philosopher
 {
-	int					name;
+	struct s_setting	*set;
 	pthread_mutex_t		*left;
 	pthread_mutex_t		*right;
-	int					eat_cnt;
 	suseconds_t			prev_eat_time;
-	struct s_setting	*set;
+	int					name;
+	int					eat_cnt;
 }						t_philosopher;
 
 typedef struct s_setting
 {
-	t_philosopher	*philosophers;
-	int				i;
-	pthread_t		*pid;
 	pthread_mutex_t	*mid;
+	pthread_mutex_t	m_print;
+	pthread_mutex_t	m_end_life;
+	t_philosopher	*philosophers;
+	suseconds_t		start_time;
+	pthread_t		*pid;
+	int				i;
 	int				num;
 	int				die_time;
 	int				sleep_time;
 	int				eat_time;
 	int				eat_cnt;
-	suseconds_t		start_time;
-	pthread_mutex_t	m_print;
 	int				end_flag;
-	pthread_t		end_th;
+	int				end_life_cnt;
 }					t_setting;
+
+// life.c
+void 		end_life_counter(t_philosopher *ph)
+void		eat(t_philosopher *ph);
+void		life_sleep(t_philosopher *ph);
+void		*life(void *a);
+char		life_start(t_setting *set);
 
 // init.c
 char		valid_argv(int argc, char **argv, int *info);
 void		init_info(char **argv, int *info);
 char		init_philosophers(t_setting *set);
 char		init(int *info, t_setting *set);
-
-// life.c
-void		eat(t_philosopher *ph);
-void		life_sleep(t_philosopher *ph);
-void		*life(void *a);
-char		life_start(t_setting *set);
-void		*exit_all_life(void *set);
 
 // utils
 int			ft_atoi(const char *str);

@@ -35,5 +35,3 @@ int	main(int argc, char **argv)
 	printf("all live... Life is continue...\n");
 	return (0);
 }
-
-// 쓰레드 한개 더 만들어서 죽는순간 찾기

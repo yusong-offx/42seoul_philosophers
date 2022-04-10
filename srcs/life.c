@@ -11,13 +11,11 @@
 /* ************************************************************************** */
 
 #include "../includes/headerfile.h"
-int	g_eat;
-pthread_mutex_t tmp;
-void test()
+void end_life_counter(t_philosopher *ph)
 {
-	pthread_mutex_lock(&tmp);
-	g_eat++;
-	pthread_mutex_unlock(&tmp);
+	pthread_mutex_lock(&ph->set->m_end_life);
+	ph->set->num--;
+	pthread_mutex_unlock(&ph->set->m_end_life);
 }
 
 void	eat(t_philosopher *ph)
@@ -63,30 +61,25 @@ void	*life(void *a)
 		life_sleep(ph);
 		f_printf(ph, "is thinking.");
 	}
-	test();
+	end_life_counter(ph);
 	return (0);
 }
-
-
 
 char	life_start(t_setting *set)
 {
 	int	i;
 	int	start;
 
-	pthread_mutex_init(&tmp, NULL);
+	if (pthread_mutex_init(&set->m_end_life, NULL))
+		return (0);
 	i = -1;
 	set->start_time = get_time();
 	while (++i < set->num)
 		if (pthread_create(&(set->pid[i]), NULL, life, &(set->philosophers[i])))
 			return (0);
-	while(1)
-	{
-		if (g_eat == set->num)
-			break;
-		else if (set->end_flag != -1)
+	while(set->num)
+		if (set->end_flag != -1)
 			return (0);
-	}
 	i = -1;
 	while (++i < set->num)
 		pthread_join(set->pid[i], NULL);
