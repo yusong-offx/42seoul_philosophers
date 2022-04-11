@@ -26,7 +26,7 @@ char	valid_argv(int argc, char **argv, int *info)
 			i++;
 		}
 		init_info(argv, info);
-		if (info[1] <= 1)
+		if (info[1] <= 0)
 			return (0);
 		return (1);
 	}
@@ -50,15 +50,15 @@ char	init_philosophers(t_setting *set)
 {
 	int	i;
 
-	set->philosophers = malloc(sizeof(t_philosopher) * set->num);
-	set->mid = malloc(sizeof(pthread_mutex_t) * set->num);
-	set->pid = malloc(sizeof(pthread_t) * set->num);
-	if (!(set->philosophers && set->mid && set->pid))
+	if (step_malloc(set))
 		return (0);
 	i = -1;
 	while (++i < set->num)
 		if (pthread_mutex_init(&(set->mid[i]), NULL))
+		{
+			setting_free(set);
 			return (0);
+		}
 	i = -1;
 	while (++i < set->num)
 	{
@@ -67,6 +67,7 @@ char	init_philosophers(t_setting *set)
 		set->philosophers[i].name = i + 1;
 		set->philosophers[i].eat_cnt = set->eat_cnt;
 		set->philosophers[i].set = set;
+		set->philosophers[i].prev_eat_time = 0;
 	}
 	return (1);
 }
@@ -74,12 +75,19 @@ char	init_philosophers(t_setting *set)
 char	init(int *info, t_setting *set)
 {
 	set->num = info[1];
+	if (set->num == 1)
+		set->num++;
+	set->end_life_cnt = info[1];
 	set->die_time = info[2];
 	set->eat_time = info[3];
 	set->sleep_time = info[4];
 	set->eat_cnt = info[5];
 	set->end_flag = -1;
 	if (init_philosophers(set) && !pthread_mutex_init(&(set->m_print), NULL))
+	{
+		if (info[1] == 1)
+			set->num--;
 		return (1);
+	}
 	return (0);
 }

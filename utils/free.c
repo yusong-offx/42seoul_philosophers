@@ -12,53 +12,30 @@
 
 #include "../includes/headerfile.h"
 
-int	main(int argc, char **argv)
+void	setting_free(t_setting *set)
 {
-	int			info[6];
-	t_setting	set;
-
-	if (!valid_argv(argc, argv, info))
-	{
-		printf("input error.\n");
-		return (1);
-	}
-	if (!init(info, &set))
-	{
-		printf("init error.\n");
-		return (1);
-	}
-	if (!life_start(&set))
-	{
-		printf("life something wrong.\n");
-		return (1);
-	}
-	printf("all live... Life is continue...\n");
-	return (0);
+	free(set->philosophers);
+	free(set->mid);
+	free(set->pid);
 }
 
-char	death_checker(t_setting *set)
+char	step_malloc(t_setting *set)
 {
-	int	i;
-
-	while (set->end_life_cnt)
+	set->philosophers = malloc(sizeof(t_philosopher) * set->num);
+	if (!set->philosophers)
+		return (1);
+	set->mid = malloc(sizeof(pthread_mutex_t) * set->num);
+	if (!set->mid)
 	{
-		i = -1;
-		while (++i < set->num)
-		{
-			if (set->philosophers[i].prev_eat_time + set->die_time <= get_time() - set->philosophers[i].start_time)
-			{
-				set->end_flag = set->philosophers[i].name;
-				printf("[%10ldms] %d %s\n", get_time() - set->start_time, set->philosophers[i].name, "died.");
-				i = -1;
-				while (++i < set->num)
-				{
-					pthread_detach(set->pid[i]);
-					pthread_mutex_destroy(&set->mid[i]);
-				}
-				setting_free(set);
-				return (1);
-			}
-		}
+		free(set->philosophers);
+		return (1);
+	}
+	set->pid = malloc(sizeof(pthread_t) * set->num);
+	if (!set->pid)
+	{
+		free(set->philosophers);
+		free(set->mid);
+		return (1);
 	}
 	return (0);
 }

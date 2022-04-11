@@ -25,15 +25,16 @@ typedef struct s_philosopher
 	pthread_mutex_t		*left;
 	pthread_mutex_t		*right;
 	suseconds_t			prev_eat_time;
+	suseconds_t			start_time;
 	int					name;
 	int					eat_cnt;
 }						t_philosopher;
 
 typedef struct s_setting
 {
-	pthread_mutex_t	*mid;
-	pthread_mutex_t	m_print;
 	pthread_mutex_t	m_end_life;
+	pthread_mutex_t	m_print;
+	pthread_mutex_t	*mid;
 	t_philosopher	*philosophers;
 	suseconds_t		start_time;
 	pthread_t		*pid;
@@ -47,8 +48,11 @@ typedef struct s_setting
 	int				end_life_cnt;
 }					t_setting;
 
+// main.c
+char		death_checker(t_setting *set);
+
 // life.c
-void 		end_life_counter(t_philosopher *ph)
+void 		end_life_counter(t_philosopher *ph);
 void		eat(t_philosopher *ph);
 void		life_sleep(t_philosopher *ph);
 void		*life(void *a);
@@ -66,5 +70,9 @@ char		is_num(char *c);
 suseconds_t	get_time(void);
 void		my_sleep(int time);
 void		f_printf(t_philosopher *ph, char *s);
+
+// free.c
+void		setting_free(t_setting *set);
+char		step_malloc(t_setting *set);
 
 #endif

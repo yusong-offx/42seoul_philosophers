@@ -1,7 +1,6 @@
 # OPTION
 CC=gcc
-CFLAGS= 
-# CFLAGS= -Wall -Werror -Wextra
+CFLAGS= -Wall -Werror -Wextra
 RM= rm -f
 
 # SOURCE
@@ -13,7 +12,8 @@ NAME=philo
 SRCS=	$(D_LOGIC)main.c \
 		$(D_LOGIC)init.c \
 		$(D_LOGIC)life.c \
-		$(D_UTILS)utils.c
+		$(D_UTILS)utils.c \
+		$(D_UTILS)free.c
 
 
 OBJS= $(SRCS:.c=.o)

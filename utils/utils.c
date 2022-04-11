@@ -69,30 +69,13 @@ void	my_sleep(int time)
 
 	now = get_time() + time;
 	while (now > get_time())
-		usleep(10000);
+		usleep(1000);
 }
 
 void	f_printf(t_philosopher *ph, char *s)
 {
-	suseconds_t tmp;
-	int			i;
-
 	pthread_mutex_lock(&(ph->set->m_print));
-	tmp = get_time() - ph->set->start_time;
-	if (ph->prev_eat_time + ph->set->die_time < tmp)
-	{
-		i = -1;
-		while (++i < ph->set->num)
-		{
-			pthread_detach(ph->set->pid[i]);
-			pthread_mutex_destroy(&ph->set->mid[i]);
-		}
-		printf("[%10ldms] %d %s\n", ph->prev_eat_time + ph->set->die_time, ph->name, "died.");
-		ph->set->end_flag = ph->name;
-	}
-	else if (ph->set->end_flag == -1)
-	{
-		printf("[%10ldms] %d %s\n",tmp, ph->name, s);
-		pthread_mutex_unlock(&(ph->set->m_print));
-	}
+	if (ph->set->end_flag == -1)
+		printf("[%10ldms] %d %s\n",get_time() - ph->start_time, ph->name, s);
+	pthread_mutex_unlock(&(ph->set->m_print));
 }

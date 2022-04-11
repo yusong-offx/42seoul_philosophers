@@ -4,3 +4,4 @@ test.c
 
 srcs/*.o
 utils/*.o
+*.out
