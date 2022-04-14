@@ -6,7 +6,7 @@
 /*   By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 19:23:46 by yusong            #+#    #+#             */
-/*   Updated: 2022/04/15 06:58:38 by yusong           ###   ########.fr       */
+/*   Updated: 2022/04/15 08:38:25 by yusong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,12 @@ char	init_philo(t_setting *set)
 		return (FAIL);
 	i = -1;
 	while (++i < set->info[NUM])
-		if (pthread_mutex_init(&set->fork_mutex[i], NULL) || pthread_mutex_init(&set->philo_mutex[i], NULL))
+		if (pthread_mutex_init(&set->fork_mutex[i], NULL))
 			return (FAIL);
 	i = -1;
 	while (++i < set->info[NUM])
 	{
 		set->philos[i].name = i + 1;
-		set->philos[i].my_mutex = &set->philo_mutex[i];
 		set->philos[i].fork_left = &set->fork_mutex[i];
 		set->philos[i].fork_right = &set->fork_mutex[(i + 1) % set->info[NUM]];
 		set->philos[i].prev_eat_time = 0;
@@ -74,9 +73,9 @@ char	init_info(int argc, char **argv, t_setting *set)
 	if (set->info[1] == 0)
 		return (FAIL);
 	set->fork_mutex = (pthread_mutex_t *)malloc(set->info[NUM] * sizeof(pthread_mutex_t));
-	set->philo_mutex = (pthread_mutex_t *)malloc(set->info[NUM] * sizeof(pthread_mutex_t));
-	if (!(set->fork_mutex && set->philo_mutex))
+	if (!(set->fork_mutex) || pthread_mutex_init(&set->print_mutex, NULL))
 		return (FAIL);
+	set->done = set->info[1];
 	return (SUCCESS);
 }
 

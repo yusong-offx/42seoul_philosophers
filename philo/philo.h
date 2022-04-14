@@ -6,7 +6,7 @@
 /*   By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 19:16:47 by yusong            #+#    #+#             */
-/*   Updated: 2022/04/15 07:37:16 by yusong           ###   ########.fr       */
+/*   Updated: 2022/04/15 08:36:52 by yusong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ typedef enum e_info {
 	SLEEP,
 	DONE,
 }	t_info;
-pthread_mutex_t tmp;
+
 typedef struct s_philosopher
 {
 	int					name;
-	pthread_mutex_t		*my_mutex;
 	pthread_mutex_t		*fork_left;
 	pthread_mutex_t		*fork_right;
 	suseconds_t			prev_eat_time;
@@ -46,14 +45,17 @@ typedef struct s_setting
 	int				info[6];
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	*philo_mutex;
+	pthread_mutex_t	print_mutex;
 	pthread_t		*thread_id;
 	struct timeval	start_time;
+	int				done;
 	t_philosopher	*philos;
 }	t_setting;
 
 // exit_free.c
 char		end_exit(t_setting *set);
 char		undertaker(t_setting *set);
+void		var_done(t_philosopher *ph);
 
 // init.c
 char		ready(int argc, char **argv, t_setting *set);

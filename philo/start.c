@@ -6,7 +6,7 @@
 /*   By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 21:07:28 by yusong            #+#    #+#             */
-/*   Updated: 2022/04/15 07:36:48 by yusong           ###   ########.fr       */
+/*   Updated: 2022/04/15 08:38:06 by yusong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	*philo_life(void *a)
 		p_sleep(ph);
 		f_printf(ph, "is thinking");
 	}
+	var_done(ph);
 	return (0);
 }
 
