@@ -5,37 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/04 11:43:18 by yusong            #+#    #+#             */
-/*   Updated: 2022/04/04 15:14:04 by yusong           ###   ########.fr       */
+/*   Created: 2022/04/14 19:17:22 by yusong            #+#    #+#             */
+/*   Updated: 2022/04/14 19:39:55 by yusong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/headerfile.h"
+#include "philo.h"
 
-void	setting_free(t_setting *set)
+int	main(int argc, char **argv)
 {
-	free(set->philosophers);
-	free(set->mid);
-	free(set->pid);
-}
+	t_setting	set;
 
-char	step_malloc(t_setting *set)
-{
-	set->philosophers = malloc(sizeof(t_philosopher) * set->num);
-	if (!set->philosophers)
-		return (1);
-	set->mid = malloc(sizeof(pthread_mutex_t) * set->num);
-	if (!set->mid)
-	{
-		free(set->philosophers);
-		return (1);
-	}
-	set->pid = malloc(sizeof(pthread_t) * set->num);
-	if (!set->pid)
-	{
-		free(set->philosophers);
-		free(set->mid);
-		return (1);
-	}
-	return (0);
+	if (ready(argc, argv, &set))
+		return (FAIL);
 }

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/04 12:09:27 by yusong            #+#    #+#             */
-/*   Updated: 2022/04/04 15:11:24 by yusong           ###   ########.fr       */
+/*   Created: 2022/04/14 19:43:53 by yusong            #+#    #+#             */
+/*   Updated: 2022/04/14 19:45:35 by yusong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/headerfile.h"
+#include "philo.h"
 
 int	ft_atoi(const char *str)
 {
@@ -37,45 +37,4 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (num);
-}
-
-char	is_num(char *c)
-{
-	int	i;
-
-	if (!*c)
-		return (0);
-	i = 0;
-	while (c[i])
-	{
-		if (!('0' <= c[i] && c[i] <= '9'))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-suseconds_t	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-void	my_sleep(int time)
-{
-	suseconds_t	now;
-
-	now = get_time() + time;
-	while (now > get_time())
-		usleep(1000);
-}
-
-void	f_printf(t_philosopher *ph, char *s)
-{
-	pthread_mutex_lock(&(ph->set->m_print));
-	if (ph->set->end_flag == -1)
-		printf("[%10ldms] %d %s\n",get_time() - ph->start_time, ph->name, s);
-	pthread_mutex_unlock(&(ph->set->m_print));
 }

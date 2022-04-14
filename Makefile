@@ -1,30 +1,32 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: yusong <42.4.yusong@gmail.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/04/14 19:17:41 by yusong            #+#    #+#              #
+#    Updated: 2022/04/14 19:25:26 by yusong           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # OPTION
-CC=gcc
+CC= gcc
 CFLAGS= -Wall -Werror -Wextra
 RM= rm -f
 
-# SOURCE
-D_LOGIC= ./srcs/
-D_UTILS= ./utils/
-D_HEADERS = ./includes/
-
-NAME=philo
-SRCS=	$(D_LOGIC)main.c \
-		$(D_LOGIC)init.c \
-		$(D_LOGIC)life.c \
-		$(D_UTILS)utils.c \
-		$(D_UTILS)free.c
-
+NAME= philo
+SRCS= main.c utils.c exit_free.c init.c
 
 OBJS= $(SRCS:.c=.o)
 
 all : $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -pthread -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -pthread -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	$(RM) $(OBJS)
